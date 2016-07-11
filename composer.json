@@ -1,0 +1,16 @@
+{
+    "name": "igor/composer",
+    "description": "Slim",
+    "authors": [
+        {
+            "name": "Igor",
+            "email": "igor@example.com"
+        }
+    ],
+    "require": {
+        "slim/slim": "~2.6"
+    },
+    "autoload": {
+        "classmap": ["kontroleri/"]
+    }
+}
