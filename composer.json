@@ -11,6 +11,8 @@
         "slim/slim": "~2.6"
     },
     "autoload": {
-        "classmap": ["kontroleri/"]
+        "psr-4": {
+            
+        }
     }
 }

@@ -6,7 +6,4 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Home' => $baseDir . '/kontroleri/Home.php',
-    'Korisnici' => $baseDir . '/kontroleri/Korisnici.php',
-    'Registracija' => $baseDir . '/kontroleri/Registracija.php',
 );
