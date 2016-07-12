@@ -13,8 +13,8 @@
     },
     "autoload": {
         "psr-4": {
-            "Kontroler\\": "app/kontroleri/"
-            
+            "Kontroler\\": "app/kontroleri/",
+            "Models\\": "app/models/"
         }
     }
 }
