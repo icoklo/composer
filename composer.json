@@ -8,10 +8,12 @@
         }
     ],
     "require": {
-        "slim/slim": "~2.6"
+        "slim/slim": "~2.6",
+        "illuminate/database": "^5.2"
     },
     "autoload": {
         "psr-4": {
+            "Kontroler\\": "app/kontroleri/"
             
         }
     }

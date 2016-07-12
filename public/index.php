@@ -2,7 +2,7 @@
 
 // require 'vendor/autoload.php';
 // include_once "./vendor/slim/slim/Slim/Slim.php";
-require '../vendor/autoload.php';
+require '../vendor/autoload.php'; // ../ je mapa iznad 
 use \Kontroler\Registracija as r;
 
 // include_once "./Pocetna.php";
