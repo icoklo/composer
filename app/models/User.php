@@ -6,13 +6,12 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 
 class User extends Eloquent{
 
-	// TODO sloziti da ovo proradi i ispisati nekaj iz baze
-	
 	protected $table = 'users';
-
-	public function vratiImeIPrezime()
+	
+	public function vratiImeIPrezime($ime,$prezime)
 	{
 		// $korisnici=User::
-		// echo "Ime i prezime:". $capsule->connection . " " . $this->prezime;
+		echo "Ime i prezime: " . $ime . " ". $prezime;
+		
 	}
 }

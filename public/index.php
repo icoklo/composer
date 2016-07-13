@@ -3,7 +3,7 @@
 // require 'vendor/autoload.php';
 // include_once "./vendor/slim/slim/Slim/Slim.php";
 require '../vendor/autoload.php'; // ../ je mapa iznad 
-use \Kontroler\Registracija as r;
+// use \Kontroler\Registracija as r;
 
 // include_once "./Pocetna.php";
 // include_once "./controllers/Home.php";
@@ -45,6 +45,17 @@ $app->get('/home', "Kontroler\Home:funkcija");
 
 $app->get('/home/registracija', "Kontroler\\Registracija:funkcija");
 $app->get('/home/korisnici', "Kontroler\\Korisnici:funkcija");
+
+/*$app->get('/home/korisnici', function(){
+	// Fetch all users
+	
+	$baza=new \Models\Baza();
+	$baza->spojiSeNaBazu();
+
+    $korisnici = \Models\User::all();
+    echo $korisnici->toJson(); 
+
+});*/ 
 
 $app->run();
 

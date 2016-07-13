@@ -3,27 +3,68 @@
 namespace Models;
 
 use Illuminate\Database\Capsule\Manager as Capsule;
+use Illuminate\Events\Dispatcher as Dispatcher;
+use Illuminate\Container\Container as Container;
 
-$capsule = new Capsule;
+class Baza{
 
-$capsule->addConnection([
-    'driver'    => 'mysql',
-    'host'      => 'localhost',
-    'database'  => 'icoklo',
-    'username'  => 'root',
-    'password'  => '',
-    'charset'   => 'utf8',
-    'collation' => 'utf8_bin',
-    'prefix'    => '',
-]);
+	public function __construct()
+	{
 
-// Set the event dispatcher used by Eloquent models... (optional)
-use Illuminate\Events\Dispatcher;
-use Illuminate\Container\Container;
-$capsule->setEventDispatcher(new Dispatcher(new Container));
+	}
 
-// Make this Capsule instance available globally via static methods... (optional)
-$capsule->setAsGlobal();
+	/* ne radi, 
+	public function spojiSeNaBazu(){
+		$capsule = new Capsule;
 
-// Setup the Eloquent ORM... (optional; unless you've used setEventDispatcher())
-$capsule->bootEloquent();
+		$capsule->addConnection([
+			'driver'    => 'mysql',
+			'host'      => 'localhost',
+			'database'  => 'icoklo',
+			'username'  => 'root',
+			'password'  => '',
+			'charset'   => 'utf8',
+			'collation' => 'utf8_bin',
+			'prefix'    => '',
+			]);
+
+		$capsule->setEventDispatcher(new Dispatcher(new Container));
+		$capsule->bootEloquent();
+	}*/
+	
+	public function spojiSeNaBazu(){
+
+		// Database information
+		$settings = array(
+			'driver'    => 'mysql',
+			'host'      => 'localhost',
+			'port'      => 3306,
+			'database'  => 'icoklo',
+			'username'  => 'root',
+			'password'  => '',
+			'charset'   => 'utf8',
+			'collation' => 'utf8_bin',
+			'prefix'    => '',
+			);
+		
+		// Bootstrap Eloquent ORM
+		
+		 
+		$container = new \Illuminate\Container\Container;
+		// connFactory je potreban za povezivanje na bazu
+		$connFactory = new \Illuminate\Database\Connectors\ConnectionFactory($container);
+		// conn je potreban za uspostavljanje veze prema bazi sa određenim postavkama 
+		$conn = $connFactory->make($settings);
+
+		// $resolver je potreban za rješavanje veze prema bazi, moze se dobiti instanca veze prema bazi itd
+		$resolver = new \Illuminate\Database\ConnectionResolver();
+		// dodavanje veze u resolver
+		$resolver->addConnection('default', $conn);
+		// postavljanje defaultne veze prema bazi 
+		$resolver->setDefaultConnection('default');
+		// postavlja se odgovarajuca instanca connection resolver-a 
+		\Illuminate\Database\Eloquent\Model::setConnectionResolver($resolver);
+
+	}
+
+}
