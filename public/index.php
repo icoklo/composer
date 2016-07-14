@@ -2,8 +2,8 @@
 
 // require 'vendor/autoload.php';
 // include_once "./vendor/slim/slim/Slim/Slim.php";
-require '../vendor/autoload.php'; // ../ je mapa iznad 
-require_once '../app/config/Baza.php'; // tako da dalje mogu bez problema raditi s bazom preko eloquent ORM-a 
+require '../vendor/autoload.php'; // ../ je mapa iznad
+require_once '../app/config/Baza.php'; // tako da dalje mogu bez problema raditi s bazom preko eloquent ORM-a
 
 // include_once "./Pocetna.php";
 // include_once "./controllers/Home.php";
@@ -13,7 +13,7 @@ require_once '../app/config/Baza.php'; // tako da dalje mogu bez problema raditi
 
 $app = new \Slim\Slim();
 
-$app->response->headers->set('Content-Type', 'application/json');
+// $app->response->headers->set('Content-Type', 'application/json');
 // $app->contentType('application/json; charset=utf-8');
 
 /*$app->get('/hello/:name', function ($name) {

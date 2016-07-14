@@ -8,9 +8,11 @@ class RadSKorisnicima
 {
 
 	public function unosKorisnika(){
-		$app=\Slim\Slim::getInstance();
+
+		$app = \Slim\Slim::getInstance();
+		$app->response->headers->set('Content-Type', 'application/json');
 		if(isset($_POST["ime"]) AND isset($_POST["prezime"])){
-			// ako su ime i prezime uneseni 
+			// ako su ime i prezime uneseni
 			if($_POST["ime"] AND $_POST["prezime"]){
 				$imeKorisnika = $_POST["ime"];
 				$prezimeKorisnika = $_POST["prezime"];
@@ -35,11 +37,11 @@ class RadSKorisnicima
 	public function editKorisnika($id){
 
 		// echo "id ".$id;
-
 		$pronadiKorisnika = User::find($id);
 		$poruka = "";
 		$polje = array();
 		$app = \Slim\Slim::getInstance();
+		$app->response->headers->set('Content-Type', 'application/json');
 		// ako je pronaden korisnik
 		if($pronadiKorisnika){
 			$staroIme = $pronadiKorisnika->ime;
@@ -59,18 +61,21 @@ class RadSKorisnicima
 			/* $polje = array('poruka' => $poruka);
 			echo json_encode($polje); */
 			$poruka = "Korisnik sa id: ". $id . " ne postoji";
-			$app->halt(404, $poruka);
+			$app->halt(400, $poruka);
 		}
 
 	}
 
 	public function ispisPodatakaKorisnika($id){
+
 		// ispis podataka odredenog korisnika
 		$app = \Slim\Slim::getInstance();
+		$app->response->headers->set('Content-Type', 'application/json');
 		$korisnik = "";
 		$poruka = "";
 		$polje = array();
-			// jedan korisnik
+
+		// jedan korisnik
 		$korisnik = User::find($id);
 
 		if($korisnik){
@@ -84,17 +89,20 @@ class RadSKorisnicima
 	}
 
 	public function ispisSvihKorisnika(){
+
+		$app = \Slim\Slim::getInstance();
+		$app->response->headers->set('Content-Type', 'application/json');
 		$polje = array();
 		$poljeZaIspisSvihKorisnika = array();
 		$korisnici = User::all();
 		if($korisnici){
 
 			foreach ($korisnici as $korisnik) {
-					// ako se polje definira ovako tada se u svakom koraku for petlje u to polje upisuje nova vrijednost
-					// i to polje sadrzi samo jedan element
-					// $polje = array('id' => $korisnik->id, 'Ime' => $korisnik->ime, 'Prezime' => $korisnik->prezime);
+				// ako se polje definira ovako tada se u svakom koraku for petlje u to polje upisuje nova vrijednost
+				// i to polje sadrzi samo jedan element
+				// $polje = array('id' => $korisnik->id, 'Ime' => $korisnik->ime, 'Prezime' => $korisnik->prezime);
 
-					// ovo je dobar nacin za definiranje polja koje se sastoji od vise elemenata (vise od jednog elementa)
+				// ovo je dobar nacin za definiranje polja koje se sastoji od vise elemenata (vise od jednog elementa)
 				$polje[] = array('id' => $korisnik->id, 'Ime' => $korisnik->ime, 'Prezime' => $korisnik->prezime);
 
 			}

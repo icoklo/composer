@@ -11,10 +11,13 @@ class Korisnici{
 	}
 
 	public function funkcija(){
+		$app = \Slim\Slim::getInstance();
+		// $app->response->headers->set('Content-Type', 'application/json');
+
 		echo "<h2> Naziv klase: ".__CLASS__."</h2>";
-		echo "<h2> Naziv funkcije: ".__FUNCTION__."</h2>"; 
-		echo "<h2> Svi korisnici: </h2>"; 
-		
+		echo "<h2> Naziv funkcije: ".__FUNCTION__."</h2>";
+		echo "<h2> Svi korisnici: </h2>";
+
 		/*$a = $b + $c;
 		if($b AND $c)
 		{
