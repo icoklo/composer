@@ -1,5 +1,4 @@
 <?php // pazi na prazan prostor ili na novi red prije <?php oznake 
-
 namespace Config;
 
 use Illuminate\Database\Capsule\Manager as Capsule;

@@ -12,7 +12,9 @@ require_once '../app/config/Baza.php'; // tako da dalje mogu bez problema raditi
 // echo "<h2>Primjer url parametra za test: localhost/composer/pocetna/funkcija1  </h2>";
 
 $app = new \Slim\Slim();
+
 $app->response->headers->set('Content-Type', 'application/json');
+// $app->contentType('application/json; charset=utf-8');
 
 /*$app->get('/hello/:name', function ($name) {
     echo "Hello, " . $name;
@@ -31,7 +33,7 @@ $app->response->headers->set('Content-Type', 'application/json');
 	elseif (strcmp($nazivLowercase, "funkcija3")==0) {
 		$pocetna->funkcija3();
 	}
-	
+
 });*/
 
 // $app->get('/pocetna', "Pocetna:funkcija1"); // pozivanje funkcije1 iz klase Pocetna
@@ -39,54 +41,42 @@ $app->response->headers->set('Content-Type', 'application/json');
 
 //$app->get('/home/', "Home:funkcija"); // bez namespace
 
-// kontroler sa namespace 
-$app->get('/home', "Kontroler\Home:funkcija"); 
+// kontroler sa namespace
+$app->get('/home', "Kontroler\Home:funkcija");
 
 // $app->get('/home/registracija', "K\Registracija:funkcija");
 
 $app->get('/home/registracija', "Kontroler\\Registracija:funkcija");
 $app->get('/home/korisnici', "Kontroler\\Korisnici:funkcija");
 
-$app->post('/home/user', "Kontroler\\RadSKorisnicima:unosKorisnika"); // TO Radi
+// Rad s bazom podataka
+$app->post('/home/user', "Kontroler\\RadSKorisnicima:unosKorisnika");
 
-/*$app->post('/home/user/:id', function($id){
-	$radSKorisnicima=new Kontroler\RadSKorisnicima;
-	$radSKorisnicima->editKorisnika($id);
-}); */
+$app->post('/home/user/:id', "Kontroler\\RadSKorisnicima:editKorisnika");
 
-$app->post('/home/user/:id', "Kontroler\\RadSKorisnicima:editKorisnika"); // SLOZITI DA RADI S KONTROLEROM i da se ispisuju podaci u json formatu
+$app->get('/home/user/:id', "Kontroler\\RadSKorisnicima:ispisPodatakaKorisnika")->conditions(array('id' => '[0-9]+'));
 
-$app->get('/home/user/:id', function($id){ // SLOZITI DA RADI S KONTROLEROM i da se ispisuju podaci u json formatu
-	$radSKorisnicima=new Kontroler\RadSKorisnicima;
-	if(is_numeric($id)){
-		$radSKorisnicima->ispisiPodatkeKorisnika($id);
-	}
-	else{ // /user/list 
-		$radSKorisnicima->ispisiSveKorisnike();
-	}
-	
-});
+$app->get('/home/user/list', "Kontroler\\RadSKorisnicima:ispisSvihKorisnika");
 
 /*$app->get('/home/korisnici', function(){
 	// Fetch all users
-	
+
 	$baza=new \Models\Baza();
 	$baza->spojiSeNaBazu();
 
     $korisnici = \Models\User::all();
-    echo $korisnici->toJson(); 
+    echo $korisnici->toJson();
 
-});*/ 
+});*/
 
 $app->run();
 
-/* 
-NAPOMENE: kad se napravi neki novi file (.php ili nest drugo) onda treba pozvati naredbu composer update tako da on prikupi info o tom novom fajlu i da skuzi da 
-si napravil novi fajl, ali prvo moras u composer.json definirati za koje mape da composer provjerava stanje, a to se napravi pomoću opcije autoload, i za tu opciju autoloadanja (auto ucitavanja svih fajlova tak da ne moras koristiti include na vrhu skripte) imas vise mogucnosti 
+/*
+NAPOMENE: kad se napravi neki novi file (.php ili nest drugo) onda treba pozvati naredbu composer update tako da on prikupi info o tom novom fajlu i da skuzi da
+si napravil novi fajl, ali prvo moras u composer.json definirati za koje mape da composer provjerava stanje, a to se napravi pomoću opcije autoload, i za tu opciju autoloadanja (auto ucitavanja svih fajlova tak da ne moras koristiti include na vrhu skripte) imas vise mogucnosti
 (PSR-0, PSR-4, Classmap i Files)
 
 JSONView dodatak
 i Postman dodatak za Chrome
-http://stackoverflow.com/questions/8125064/slim-php-and-get-parameters
 
 */
