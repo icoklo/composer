@@ -4,33 +4,46 @@ namespace Kontroler;
 use Models\User as User;
 
 // handlanje gresaka
-class RadSKorisnicima
+// ako je sve u redu sa zahtjevom, tj ako developer nista ne podesi tada se kod slim-a uvijek vraca http status kod 200
+// bez obzira jeli se desila greska ili ne, ako se zeli vratiti neki drugi http status kod tada to treba postaviti sam developer
+// struktura json-a koji vraca poruke korisniku
+class RadSKorisnicima extends Kontroler
 {
 
-	public function unosKorisnika(){
-
-		$app = \Slim\Slim::getInstance();
-		$app->response->headers->set('Content-Type', 'application/json');
+	public function provjeriPostParametre(){
 		if(isset($_POST["ime"]) AND isset($_POST["prezime"])){
-			// ako su ime i prezime uneseni
+
+			// ako su za ime i prezime unesene neke vrijednosti
 			if($_POST["ime"] AND $_POST["prezime"]){
-				$imeKorisnika = $_POST["ime"];
-				$prezimeKorisnika = $_POST["prezime"];
-				$user = new \Models\User;
-				$user->ime = $imeKorisnika;
-				$user->prezime = $prezimeKorisnika;
-				$user->save();
-				$poruka = "Korisnik ".$imeKorisnika." ".$prezimeKorisnika." je unesen.";
-				$polje = array('poruka' => $poruka);
-				echo json_encode($polje);
+				return true;
 			}
-			else{
-				$app->halt(400, 'Niste unijeli ime i prezime!');
+			else {
+				return false;
 			}
 		}
 		else{
-			$app->halt(400, 'Niste unijeli ime i prezime!');
+			return false;
 		}
+	}
+
+	public function unosKorisnika(){
+
+		if($this->provjeriPostParametre==true){
+			$imeKorisnika = $_POST["ime"];
+			$prezimeKorisnika = $_POST["prezime"];
+			$user = new \Models\User;
+			$user->ime = $imeKorisnika;
+			$user->prezime = $prezimeKorisnika;
+			$user->save();
+			$poruka = "Korisnik ".$imeKorisnika." ".$prezimeKorisnika." je unesen.";
+
+				// pristup metodi ispis() iz klase Kontroler
+			$this->ispisiPoruku($poruka,200);
+		}
+		else{
+			$this->ispisiPoruku("Niste unijeli ime i prezime!",400);
+		}
+
 
 	}
 
@@ -39,81 +52,63 @@ class RadSKorisnicima
 		// echo "id ".$id;
 		$pronadiKorisnika = User::find($id);
 		$poruka = "";
-		$polje = array();
-		$app = \Slim\Slim::getInstance();
-		$app->response->headers->set('Content-Type', 'application/json');
+
 		// ako je pronaden korisnik
 		if($pronadiKorisnika){
-			$staroIme = $pronadiKorisnika->ime;
-			$staroPrezime = $pronadiKorisnika->prezime;
+			if($this->provjeriPostParametre()==true){
+				$staroIme = $pronadiKorisnika->ime;
+				$staroPrezime = $pronadiKorisnika->prezime;
 
-			$pronadiKorisnika->ime = $_POST["ime"];
-			$pronadiKorisnika->prezime = $_POST["prezime"];
+				$pronadiKorisnika->ime = $_POST["ime"];
+				$pronadiKorisnika->prezime = $_POST["prezime"];
 
-			$pronadiKorisnika->save();
+				$pronadiKorisnika->save();
 			// Moze i ovakav način
-			$poruka = "Staro ime: {$staroIme} staro prezime: {$staroPrezime}, Novi podaci: {$pronadiKorisnika->fullName()}.";
-			$polje = array('poruka' => $poruka);
-			echo json_encode($polje);
-			return;
+				$poruka = "Stari podaci: {$staroIme} {$staroPrezime}, Novi podaci: {$pronadiKorisnika->fullName()}.";
+				$this->ispisiPoruku($poruka,200);
+			}
+			else{
+				$this->ispisiPoruku("Niste unijeli novo ime i prezime!",400);
+			}
 		}
 		else{
 			/* $polje = array('poruka' => $poruka);
 			echo json_encode($polje); */
 			$poruka = "Korisnik sa id: ". $id . " ne postoji";
-			$app->halt(400, $poruka);
+			$this->ispisiPoruku($poruka,400);
 		}
-
 	}
 
 	public function ispisPodatakaKorisnika($id){
 
 		// ispis podataka odredenog korisnika
-		$app = \Slim\Slim::getInstance();
-		$app->response->headers->set('Content-Type', 'application/json');
 		$korisnik = "";
 		$poruka = "";
-		$polje = array();
 
 		// jedan korisnik
 		$korisnik = User::find($id);
 
 		if($korisnik){
-			$polje = array('id' => $korisnik->id, 'Ime' => $korisnik->ime, 'Prezime' => $korisnik->prezime);
-			echo json_encode($polje);
+			$this->ispisDohvacenihPodataka($korisnik);
 		}
 		else {
 			$poruka = "Korisnik sa id: ". $id . " ne postoji";
-			$app->halt(400, $poruka);
+			// $app->halt(400, $poruka);
+			$this->ispisiPoruku($poruka,400);
 		}
 	}
 
 	public function ispisSvihKorisnika(){
 
-		$app = \Slim\Slim::getInstance();
-		$app->response->headers->set('Content-Type', 'application/json');
-		$polje = array();
-		$poljeZaIspisSvihKorisnika = array();
 		$korisnici = User::all();
 		if($korisnici){
-
-			foreach ($korisnici as $korisnik) {
-				// ako se polje definira ovako tada se u svakom koraku for petlje u to polje upisuje nova vrijednost
-				// i to polje sadrzi samo jedan element
-				// $polje = array('id' => $korisnik->id, 'Ime' => $korisnik->ime, 'Prezime' => $korisnik->prezime);
-
-				// ovo je dobar nacin za definiranje polja koje se sastoji od vise elemenata (vise od jednog elementa)
-				$polje[] = array('id' => $korisnik->id, 'Ime' => $korisnik->ime, 'Prezime' => $korisnik->prezime);
-
-			}
-			$poljeZaIspisSvihKorisnika=array('korisnici'=>$polje);
-			echo json_encode($poljeZaIspisSvihKorisnika);
+			$this->ispisDohvacenihPodataka($korisnici);
 		}
 		else{
 			// ili ispis sljedece poruke ili ispis praznog polja
 			// $poruka = "Nema korisnika u bazi";
 			// $polje = array('poruka' => $poruka);
-			echo json_encode($polje);
+			$this->ispisDohvacenihPodataka($korisnici);
 		}
 	}
 }
