@@ -57,6 +57,3 @@ use Illuminate\Container\Container as Container;
 	$resolver->setDefaultConnection('default');
 		// postavlja se odgovarajuca instanca connection resolver-a
 	\Illuminate\Database\Eloquent\Model::setConnectionResolver($resolver);
-
-
-

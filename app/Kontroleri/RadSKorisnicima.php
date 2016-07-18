@@ -89,7 +89,7 @@ class RadSKorisnicima extends Kontroler
 		$korisnik = User::find($id);
 
 		if($korisnik){
-			$this->ispisDohvacenihPodataka($korisnik);
+			$this->ispisPodataka($korisnik);
 		}
 		else {
 			$poruka = "Korisnik sa id: ". $id . " ne postoji";
@@ -102,13 +102,13 @@ class RadSKorisnicima extends Kontroler
 
 		$korisnici = User::all();
 		if($korisnici){
-			$this->ispisDohvacenihPodataka($korisnici);
+			$this->ispisPodataka($korisnici);
 		}
 		else{
 			// ili ispis sljedece poruke ili ispis praznog polja
 			// $poruka = "Nema korisnika u bazi";
 			// $polje = array('poruka' => $poruka);
-			$this->ispisDohvacenihPodataka($korisnici);
+			$this->ispisPodataka($korisnici);
 		}
 	}
 }

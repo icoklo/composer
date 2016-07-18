@@ -27,7 +27,7 @@ class Kontroler{
 
 	// funkcija za ispis dohvacenih podataka iz baze podataka, konkretno ovdje se radi o dohvacenim korisnicima iz baze
 
-	protected function ispisDohvacenihPodataka($podaciZaIspis){
+	protected function ispisPodataka($podaciZaIspis){
 		$ispis = array();
 
 		// pomocno polje koje se koristi kod ispisa vise elemenata
