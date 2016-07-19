@@ -49,4 +49,11 @@ NAPOMENE: kad se napravi neki novi file (.php ili nest drugo) onda treba pozvati
 si napravil novi fajl, ali prvo moras u composer.json definirati za koje mape da composer provjerava stanje, a to se napravi pomoću opcije autoload, i za tu opciju autoloadanja (auto ucitavanja svih fajlova tak da ne moras koristiti include na vrhu skripte) imas vise mogucnosti
 (PSR-0, PSR-4, Classmap i Files)
 - virtual hosts apache: C:\Windows\System32\drivers\etc\hosts i httpd-vhosts.conf
+Potrebno dodati u hosts zapis sljedeceg oblika:
+
+127.0.0.1   igor.loc
+127.0.0.1   composer.loc
+127.0.0.1   laravel.loc
+
+te nakon sto se podesi httpd-vhosts.conf app se pokrece tako da se u browser upise naziv .loc fajla
 */
